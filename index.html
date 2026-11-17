@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CineMonvex</title>
+<meta name="description" content="Encontre vagas de emprego e candidate-se em poucos minutos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f8fb; --surface:#ffffff; --ink:#10243b; --muted:#566b82;
+  --line:#d8e1ea; --brand:#1d5cff; --brand-ink:#ffffff; --mark:#ffd84d;
+  --ok:#0a7d4f; --err:#b3261e;
+  --head:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1a2b; --surface:#12263c; --ink:#eaf1f8; --muted:#9fb2c6;
+    --line:#26405b; --brand:#6b95ff; --brand-ink:#0c1a2b; --ok:#4fd39a; --err:#ff8f86;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{-webkit-text-size-adjust:100%;margin:0;background:var(--bg);color:var(--ink);font:18px/1.6 var(--body)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:10}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font:800 1.4rem var(--head);text-decoration:none;letter-spacing:-.02em}
+.logo b{background:var(--brand);color:var(--brand-ink);border-radius:6px;padding:0 8px;margin-left:4px;font-weight:800}
+nav{display:flex;gap:20px;font-weight:600;font-size:.95rem}
+nav a{text-decoration:none;color:var(--muted)}
+nav a:hover{color:var(--ink)}
+.hero{padding:64px 0 40px}
+h1{font:800 clamp(2.2rem,6vw,3.6rem)/1.05 var(--head);letter-spacing:-.03em;margin:0 0 16px;max-width:18ch}
+.hero p{color:var(--muted);max-width:52ch;margin:0 0 28px}
+.filters{display:flex;gap:10px;flex-wrap:wrap}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:11px 14px;width:100%}
+.filters input{flex:2 1 220px}.filters select{flex:1 1 160px}
+h2{font:800 1.7rem var(--head);letter-spacing:-.02em;margin:0 0 20px}
+section{padding:40px 0}
+.job{display:grid;grid-template-columns:1fr auto;gap:8px 20px;align-items:center;padding:20px 0;border-top:1px solid var(--line)}
+.job:last-child{border-bottom:1px solid var(--line)}
+.job h3{margin:0;font:600 1.2rem var(--head)}
+.job .meta{color:var(--muted);font-size:.95rem}
+.job .desc{grid-column:1;margin:0;font-size:1rem}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:0 10px;font-size:.85rem;margin-right:6px;background:var(--surface)}
+.btn{display:inline-block;min-height:44px;font:600 1rem var(--body);background:var(--brand);color:var(--brand-ink);border:0;border-radius:8px;padding:11px 20px;cursor:pointer;text-decoration:none;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.alt{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+.empty{color:var(--muted);padding:24px 0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:28px}
+form{display:grid;gap:16px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{display:grid;gap:6px;font-weight:600;font-size:.95rem}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:400}
+.check input{width:auto;margin-top:6px}
+#status{margin:0;font-weight:600}
+#status.ok{color:var(--ok)}#status.err{color:var(--err)}
+.sub{color:var(--muted);margin:-8px 0 20px}
+.plats{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.plats li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 16px;font:600 1rem var(--head)}
+.apply{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;align-items:start}
+.side{display:grid;gap:16px}
+.side .btn{display:block;margin-top:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px}
+.card h3{margin:0 0 8px;font:600 1.15rem var(--head)}
+.card p{margin:0;color:var(--muted);font-size:1rem}
+.goals{margin:8px 0 28px;padding-left:20px}
+.goals li{margin:4px 0}
+.steps{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:s}
+.steps li{counter-increment:s;border-top:3px solid var(--brand);padding-top:12px;font-size:1rem}
+.steps li::before{content:counter(s);display:block;font:800 1.6rem var(--head);color:var(--brand)}
+.steps strong{display:block}
+.steps span{color:var(--muted)}
+.badges{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px;padding:0}
+.badges li{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 16px;font-weight:600;font-size:.95rem}
+.badges li.main{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.ho{display:inline-block;background:var(--brand);color:var(--brand-ink);border-radius:6px;padding:0 8px;margin-right:8px;font:600 .8rem var(--body);text-transform:uppercase;letter-spacing:.04em}
+.menu{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:44px;height:44px;cursor:pointer;color:var(--ink);font-size:1.4rem;line-height:1}
+footer{padding:32px 0;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);margin-top:24px}
+@media(max-width:760px){.grid3,.steps,.apply{grid-template-columns:1fr}}
+@media(max-width:640px){
+  body{font-size:17px}
+  .hero{padding:36px 0 24px}
+  section{padding:24px 0}
+  .row{grid-template-columns:1fr}
+  .job{grid-template-columns:1fr;padding:18px 0}
+  .job .desc{order:2}
+  .job .btn{order:3;display:block;margin-top:6px}
+  .panel{padding:20px}
+  .menu{display:block}
+  nav{display:none;position:absolute;top:64px;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--line);flex-direction:column;gap:0;padding:4px 20px 12px}
+  nav.open{display:flex}
+  nav a{padding:14px 0;font-size:1.05rem;border-bottom:1px solid var(--line)}
+  nav a:last-child{border-bottom:0}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#topo" aria-label="CineMonvex">Cine<b>Monvex</b></a>
+    <nav id="menuNav" aria-label="Principal">
+      <a href="#vagas">Vagas</a>
+      <a href="#requisitos">Requisitos</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#plataformas">Plataformas</a>
+      <a href="#candidatura">Candidate-se</a>
+    </nav>
+    <button class="menu" id="menuBtn" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menuNav">&#9776;</button>
+  </div>
+</header>
+
+<main id="topo">
+  <div class="wrap hero">
+    <h1>Trabalhe de casa assistindo filmes e séries.</h1>
+    <p>Seja avaliador na CineMonvex: você assiste ao conteúdo e responde a uma avaliação sobre a qualidade do material. Escolha uma vaga e candidate-se em poucos minutos.</p>
+    <ul class="badges">
+      <li class="main">100% home office</li>
+      <li>Só um aparelho com internet</li>
+      <li id="pagMin">A partir de R$ 120 por semana</li>
+    </ul>
+    <div class="filters">
+      <input id="busca" type="search" placeholder="Buscar por cargo ou empresa" aria-label="Buscar vagas">
+      <select id="area" aria-label="Filtrar por área"><option value="">Todas as áreas</option></select>
+    </div>
+  </div>
+
+  <section id="vagas"><div class="wrap">
+    <h2>Vagas abertas</h2>
+    <p class="sub">Todas as vagas são 100% home office: você só precisa de um aparelho conectado à internet, como celular ou computador.</p>
+    <div id="lista" aria-live="polite"></div>
+  </div></section>
+
+  <section id="requisitos"><div class="wrap">
+    <h2>O que você precisa para trabalhar</h2>
+    <div class="grid3">
+      <div class="card"><h3>Um aparelho conectado à internet</h3><p>Celular, computador ou outro aparelho com acesso à internet. Não é preciso nenhum equipamento especial.</p></div>
+      <div class="card"><h3>Carga horária a combinar</h3><p>A carga horária é combinada com cada avaliador depois da seleção.</p></div>
+      <div class="card"><h3>Metas de filmes e séries</h3><p>Você recebe metas de títulos para assistir e avaliar, de acordo com o que for combinado.</p></div>
+    </div>
+  </div></section>
+
+  <section id="sobre"><div class="wrap">
+    <h2>Sobre a CineMonvex</h2>
+    <p>A CineMonvex conecta pessoas apaixonadas por cinema e TV a oportunidades de trabalho como avaliadores de conteúdo. Nossos avaliadores assistem a filmes e séries e respondem a uma avaliação estruturada sobre a qualidade do material lançado, ajudando a entender o que funciona e o que pode melhorar no audiovisual.</p>
+    <div class="grid3">
+      <div class="card"><h3>Missão</h3><p>Gerar avaliações confiáveis e bem fundamentadas sobre filmes e séries, valorizando o olhar e o tempo de cada avaliador.</p></div>
+      <div class="card"><h3>Visão</h3><p>Ser referência em avaliação de conteúdo audiovisual no Brasil, com uma equipe diversa e bem preparada.</p></div>
+      <div class="card"><h3>Valores</h3><p>Transparência, respeito, imparcialidade, compromisso com a qualidade e valorização das pessoas.</p></div>
+    </div>
+    <h3>Nossos objetivos</h3>
+    <ul class="goals">
+      <li>Oferecer oportunidades de trabalho flexíveis e acessíveis.</li>
+      <li>Produzir avaliações claras, imparciais e úteis.</li>
+      <li>Orientar e acompanhar cada avaliador durante o trabalho.</li>
+      <li>Manter um processo seletivo simples, transparente e gratuito.</li>
+    </ul>
+    <h3>Como funciona</h3>
+    <ol class="steps">
+      <li><strong>Candidate-se</strong><span>Escolha uma vaga e preencha o formulário.</span></li>
+      <li><strong>Seleção e contato</strong><span>Chamamos os selecionados pelo WhatsApp e explicamos pagamento, carga horária e metas.</span></li>
+      <li><strong>Assista</strong><span>Receba os títulos e assista no seu ritmo.</span></li>
+      <li><strong>Avalie</strong><span>Responda à avaliação sobre a qualidade do conteúdo.</span></li>
+    </ol>
+  </div></section>
+
+  <section id="plataformas"><div class="wrap">
+    <h2>Plataformas avaliadas</h2>
+    <p class="sub">Os avaliadores assistem a conteúdos disponíveis nestas plataformas.</p>
+    <ul class="plats">
+      <li>Netflix</li>
+      <li>Amazon Prime Video</li>
+      <li>Disney+</li>
+      <li>Max</li>
+      <li>Globoplay</li>
+      <li>Apple TV+</li>
+      <li>Paramount+</li>
+      <li>MUBI</li>
+      <li>Telecine Play</li>
+      <li>Pluto TV</li>
+      <li>Plex</li>
+    </ul>
+  </div></section>
+
+  <section id="candidatura"><div class="wrap">
+    <h2>Candidate-se</h2>
+    <div class="apply">
+    <div class="panel">
+      <form id="form" novalidate>
+        <div class="row">
+          <label>Nome completo<input name="nome" required autocomplete="name"></label>
+          <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+        </div>
+        <div class="row">
+          <label>Telefone / WhatsApp<input name="telefone" type="tel" autocomplete="tel"></label>
+          <label>Vaga de interesse<select name="vaga" id="vagaSel" required><option value="">Selecione uma vaga</option></select></label>
+        </div>
+        <label>Link do currículo ou LinkedIn (opcional)<input name="link" type="url" placeholder="https://"></label>
+        <label>Mensagem<textarea name="mensagem" rows="4" placeholder="Conte um pouco sobre sua experiência."></textarea></label>
+        <label class="check"><input type="checkbox" name="lgpd" required> Concordo em compartilhar meus dados para fins de recrutamento.</label>
+        <button class="btn" type="submit">Enviar candidatura</button>
+        <p id="status" role="status"></p>
+      </form>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h3>Prefere enviar o currículo?</h3>
+        <p>Envie seu currículo e entraremos em contato quando surgir uma vaga com o seu perfil.</p>
+        <a id="linkCv" class="btn alt" href="#">Enviar currículo</a>
+      </div>
+      <div class="card">
+        <h3>Dúvidas? Fale pelo WhatsApp</h3>
+        <p>Tire suas dúvidas pelo nosso WhatsApp. O processo seletivo é gratuito.</p>
+        <a id="linkZap" class="btn" href="#" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+      </div>
+    </aside>
+    </div>
+  </div></section>
+</main>
+
+<footer><div class="wrap">© <span id="ano"></span> CineMonvex. Todos os direitos reservados.</div></footer>
+
+<script>
+/* ====== CONFIGURE AQUI ====== */
+// 1) Crie um formulário gratuito em https://formspree.io e cole o endereço abaixo.
+const FORM_ENDPOINT = "https://formspree.io/f/SEU_ID_AQUI";
+// 2) Link onde as pessoas enviam o currículo (Google Forms, Google Drive, e-mail etc.).
+//    Para e-mail use: "mailto:contato@seudominio.com?subject=Currículo"
+const LINK_CURRICULO = "https://forms.gle/SEU_LINK_AQUI";
+// 3) WhatsApp de contato: o primeiro é como aparece no site; o segundo é só números, com 55 + DDD + número.
+const TELEFONE = "(41) 99663-9826";
+const TELEFONE_NUMEROS = "5541996639826";
+// 4) Edite, adicione ou remova vagas nesta lista. "pag" = pagamento semanal inicial, em reais (cada vaga pode ter o seu).
+const VAGAS = [
+  {id:"filmes", pag:160,   titulo:"Avaliador de Filmes",        empresa:"CineMonvex", area:"Filmes",        local:"Home office", desc:"Assista aos filmes designados e avalie roteiro, atuação, imagem e som."},
+  {id:"series", pag:200,   titulo:"Avaliador de Séries",        empresa:"CineMonvex", area:"Séries",        local:"Home office", desc:"Acompanhe temporadas completas e avalie a qualidade de cada episódio."},
+  {id:"docs", pag:160,     titulo:"Avaliador de Documentários", empresa:"CineMonvex", area:"Documentários", local:"Home office", desc:"Avalie pesquisa, narrativa e produção de documentários."},
+  {id:"animacao", pag:120, titulo:"Avaliador de Animações",     empresa:"CineMonvex", area:"Animações",     local:"Home office", desc:"Assista a animações e avalie história, arte e trilha sonora."}
+];
+/* ====== FIM DA CONFIGURAÇÃO ====== */
+
+const $ = s => document.querySelector(s);
+const lista = $("#lista"), busca = $("#busca"), area = $("#area"), vagaSel = $("#vagaSel");
+const esc = t => t.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+[...new Set(VAGAS.map(v => v.area))].sort().forEach(a => area.add(new Option(a, a)));
+VAGAS.forEach(v => vagaSel.add(new Option(v.titulo + " – " + v.empresa, v.titulo + " – " + v.empresa)));
+
+function render(){
+  const q = busca.value.trim().toLowerCase(), a = area.value;
+  const itens = VAGAS.filter(v =>
+    (!a || v.area === a) && (!q || (v.titulo + " " + v.empresa).toLowerCase().includes(q)));
+  lista.innerHTML = itens.length ? itens.map(v => `
+    <article class="job">
+      <div>
+        <h3>${esc(v.titulo)}</h3>
+        <div class="meta"><span class="ho">Home office</span>${esc(v.empresa)}</div>
+      </div>
+      <a class="btn" href="#candidatura" data-vaga="${esc(v.titulo + " – " + v.empresa)}">Candidatar-se</a>
+      <p class="desc"><span class="tag">${esc(v.area)}</span><span class="tag">Aparelho com internet</span><span class="tag">A partir de R$ ${v.pag} por semana</span> ${esc(v.desc)}</p>
+    </article>`).join("")
+    : '<p class="empty">Nenhuma vaga encontrada. Tente outra busca ou envie seu currículo.</p>';
+}
+busca.addEventListener("input", render);
+area.addEventListener("change", render);
+lista.addEventListener("click", e => {
+  const b = e.target.closest("[data-vaga]");
+  if (b) vagaSel.value = b.dataset.vaga;
+});
+render();
+$("#pagMin").textContent = "A partir de R$ " + Math.min(...VAGAS.map(v => v.pag)) + " por semana";
+
+$("#linkCv").href = LINK_CURRICULO;
+$("#linkZap").href = "https://wa.me/" + TELEFONE_NUMEROS + "?text=" + encodeURIComponent("Olá! Tenho uma dúvida sobre as vagas.");
+const menuBtn = $("#menuBtn"), menuNav = $("#menuNav");
+menuBtn.addEventListener("click", () => {
+  const aberto = menuNav.classList.toggle("open");
+  menuBtn.setAttribute("aria-expanded", aberto);
+});
+menuNav.addEventListener("click", e => {
+  if (e.target.tagName === "A") { menuNav.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); }
+});
+$("#ano").textContent = new Date().getFullYear();
+
+const form = $("#form"), status = $("#status");
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  status.className = "";
+  if (!form.checkValidity()) {
+    status.textContent = "Preencha nome, e-mail, vaga e aceite o termo para enviar.";
+    status.className = "err";
+    return;
+  }
+  if (FORM_ENDPOINT.includes("SEU_ID_AQUI")) {
+    status.textContent = "Formulário ainda não configurado: informe o endereço do Formspree no arquivo index.html.";
+    status.className = "err";
+    return;
+  }
+  status.textContent = "Enviando…";
+  try {
+    const r = await fetch(FORM_ENDPOINT, {method:"POST", body:new FormData(form), headers:{Accept:"application/json"}});
+    if (!r.ok) throw new Error();
+    form.reset();
+    status.textContent = "Candidatura enviada! Entraremos em contato.";
+    status.className = "ok";
+  } catch {
+    status.textContent = "Não foi possível enviar. Tente novamente em instantes.";
+    status.className = "err";
+  }
+});
+</script>
+</body>
+</html>
