@@ -83,6 +83,7 @@ label{display:grid;gap:6px;font-weight:600;font-size:.95rem}
 .badges li.main{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
 .ho{display:inline-block;background:var(--brand);color:var(--brand-ink);border-radius:6px;padding:0 8px;margin-right:8px;font:600 .8rem var(--body);text-transform:uppercase;letter-spacing:.04em}
 .menu{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:44px;height:44px;cursor:pointer;color:var(--ink);font-size:1.4rem;line-height:1}
+.note{margin:0;color:var(--muted);font-size:.95rem}
 footer{padding:32px 0;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);margin-top:24px}
 @media(max-width:760px){.grid3,.steps,.apply{grid-template-columns:1fr}}
 @media(max-width:640px){
@@ -165,8 +166,8 @@ footer{padding:32px 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
     </ul>
     <h3>Como funciona</h3>
     <ol class="steps">
-      <li><strong>Candidate-se</strong><span>Escolha uma vaga e preencha o formulário.</span></li>
-      <li><strong>Seleção e contato</strong><span>Chamamos os selecionados pelo WhatsApp e explicamos pagamento, carga horária e metas.</span></li>
+      <li><strong>Candidate-se</strong><span>Escolha uma vaga e preencha o formulário. Depois, envie seu currículo pelo WhatsApp.</span></li>
+      <li><strong>Seleção e contato</strong><span>Respondemos pelo WhatsApp e explicamos pagamento, carga horária e metas aos selecionados.</span></li>
       <li><strong>Assista</strong><span>Receba os títulos e assista no seu ritmo.</span></li>
       <li><strong>Avalie</strong><span>Responda à avaliação sobre a qualidade do conteúdo.</span></li>
     </ol>
@@ -203,22 +204,17 @@ footer{padding:32px 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
           <label>Telefone / WhatsApp<input name="telefone" type="tel" autocomplete="tel"></label>
           <label>Vaga de interesse<select name="vaga" id="vagaSel" required><option value="">Selecione uma vaga</option></select></label>
         </div>
-        <label>Link do currículo ou LinkedIn (opcional)<input name="link" type="url" placeholder="https://"></label>
         <label>Mensagem<textarea name="mensagem" rows="4" placeholder="Conte um pouco sobre sua experiência."></textarea></label>
         <label class="check"><input type="checkbox" name="lgpd" required> Concordo em compartilhar meus dados para fins de recrutamento.</label>
         <button class="btn" type="submit">Enviar candidatura</button>
+        <p class="note">Ao clicar, o WhatsApp abre com a sua candidatura já preenchida. Envie a mensagem e depois anexe seu currículo (PDF, foto ou print) na conversa.</p>
         <p id="status" role="status"></p>
       </form>
     </div>
     <aside class="side">
       <div class="card">
-        <h3>Prefere enviar o currículo?</h3>
-        <p>Envie seu currículo e entraremos em contato quando surgir uma vaga com o seu perfil.</p>
-        <a id="linkCv" class="btn alt" href="#">Enviar currículo</a>
-      </div>
-      <div class="card">
-        <h3>Dúvidas? Fale pelo WhatsApp</h3>
-        <p>Tire suas dúvidas pelo nosso WhatsApp. O processo seletivo é gratuito.</p>
+        <h3>Fale com a gente pelo WhatsApp</h3>
+        <p>Quer agilizar a seleção? Chame no WhatsApp e converse direto com a nossa equipe sobre a vaga. Você pode enviar seu currículo por lá, em PDF, foto ou print. O processo seletivo é gratuito.</p>
         <a id="linkZap" class="btn" href="#" target="_blank" rel="noopener">Chamar no WhatsApp</a>
       </div>
     </aside>
@@ -230,15 +226,10 @@ footer{padding:32px 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
 
 <script>
 /* ====== CONFIGURE AQUI ====== */
-// 1) Crie um formulário gratuito em https://formspree.io e cole o endereço abaixo.
-const FORM_ENDPOINT = "https://formspree.io/f/SEU_ID_AQUI";
-// 2) Link onde as pessoas enviam o currículo (Google Forms, Google Drive, e-mail etc.).
-//    Para e-mail use: "mailto:contato@seudominio.com?subject=Currículo"
-const LINK_CURRICULO = "mailto:verticeservios@gmail.com?subject=Curriculo%20CineMonvex";
-// 3) WhatsApp de contato: o primeiro é como aparece no site; o segundo é só números, com 55 + DDD + número.
+// 1) WhatsApp de contato: o primeiro é como aparece no site; o segundo é só números, com 55 + DDD + número.
 const TELEFONE = "(41) 99663-9826";
 const TELEFONE_NUMEROS = "5541996639826";
-// 4) Edite, adicione ou remova vagas nesta lista. "pag" = pagamento semanal inicial, em reais (cada vaga pode ter o seu).
+// 2) Edite, adicione ou remova vagas nesta lista. "pag" = pagamento semanal inicial, em reais (cada vaga pode ter o seu).
 const VAGAS = [
   {id:"filmes", pag:160,   titulo:"Avaliador de Filmes",        empresa:"CineMonvex", area:"Filmes",        local:"Home office", desc:"Assista aos filmes designados e avalie roteiro, atuação, imagem e som."},
   {id:"series", pag:200,   titulo:"Avaliador de Séries",        empresa:"CineMonvex", area:"Séries",        local:"Home office", desc:"Acompanhe temporadas completas e avalie a qualidade de cada episódio."},
@@ -278,8 +269,7 @@ lista.addEventListener("click", e => {
 render();
 $("#pagMin").textContent = "A partir de R$ " + Math.min(...VAGAS.map(v => v.pag)) + " por semana";
 
-$("#linkCv").href = LINK_CURRICULO;
-$("#linkZap").href = "https://wa.me/" + TELEFONE_NUMEROS + "?text=" + encodeURIComponent("Olá! Tenho uma dúvida sobre as vagas.");
+$("#linkZap").href = "https://wa.me/" + TELEFONE_NUMEROS + "?text=" + encodeURIComponent("Olá! Vi as vagas da CineMonvex e quero me candidatar.");
 const menuBtn = $("#menuBtn"), menuNav = $("#menuNav");
 menuBtn.addEventListener("click", () => {
   const aberto = menuNav.classList.toggle("open");
@@ -291,7 +281,8 @@ menuNav.addEventListener("click", e => {
 $("#ano").textContent = new Date().getFullYear();
 
 const form = $("#form"), status = $("#status");
-form.addEventListener("submit", async e => {
+const limpa = t => (t || "").trim();
+form.addEventListener("submit", e => {
   e.preventDefault();
   status.className = "";
   if (!form.checkValidity()) {
@@ -299,22 +290,20 @@ form.addEventListener("submit", async e => {
     status.className = "err";
     return;
   }
-  if (FORM_ENDPOINT.includes("SEU_ID_AQUI")) {
-    status.textContent = "Formulário ainda não configurado: informe o endereço do Formspree no arquivo index.html.";
-    status.className = "err";
-    return;
-  }
-  status.textContent = "Enviando…";
-  try {
-    const r = await fetch(FORM_ENDPOINT, {method:"POST", body:new FormData(form), headers:{Accept:"application/json"}});
-    if (!r.ok) throw new Error();
-    form.reset();
-    status.textContent = "Candidatura enviada! Entraremos em contato.";
-    status.className = "ok";
-  } catch {
-    status.textContent = "Não foi possível enviar. Tente novamente em instantes.";
-    status.className = "err";
-  }
+  const d = new FormData(form);
+  const linhas = [
+    "Olá! Quero me candidatar na CineMonvex.", "",
+    "*Vaga:* " + limpa(d.get("vaga")),
+    "*Nome:* " + limpa(d.get("nome")),
+    "*E-mail:* " + limpa(d.get("email"))
+  ];
+  if (limpa(d.get("telefone"))) linhas.push("*Telefone:* " + limpa(d.get("telefone")));
+  if (limpa(d.get("mensagem"))) linhas.push("*Mensagem:* " + limpa(d.get("mensagem")));
+  linhas.push("", "Vou enviar meu currículo (PDF, foto ou print) em seguida.");
+  const url = "https://wa.me/" + TELEFONE_NUMEROS + "?text=" + encodeURIComponent(linhas.join("\n"));
+  status.innerHTML = 'Abrindo o WhatsApp… Envie a mensagem e anexe seu currículo na conversa. Se não abrir, <a href="' + url + '" target="_blank" rel="noopener">toque aqui</a>.';
+  status.className = "ok";
+  window.open(url, "_blank") || (window.location.href = url);
 });
 </script>
 </body>
